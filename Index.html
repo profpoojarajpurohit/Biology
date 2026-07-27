@@ -29,7 +29,7 @@
     <h1>Junior Mechanic (IEOR) - Mega Mock Test</h1>
     <div id="score-board"></div>
     <div id="quiz-container"></div>
-    
+   
     <div class="btn-container">
         <button id="submit-btn" onclick="checkAnswers()">Submit Test</button>
     </div>
@@ -68,8 +68,8 @@
     { q: "१२८. 'CNC' मशीनमध्ये फीड दर कोणत्या युनिटमध्ये असतो?", o: ["m/min", "mm/min", "RPM", "m/sec"], a: 1 },
     { q: "१२९. 'Rectangle' चे क्षेत्रफळ काढण्याचे सूत्र काय?", o: ["लांबी + रुंदी", "लांबी × रुंदी", "२(लांबी + रुंदी)", "लांबी / रुंदी"], a: 1 },
     { q: "१३०. 'Universal Surface Gauge' चा उपयोग कशासाठी?", o: ["लेआउट करण्यासाठी", "चकाकी मोजण्यासाठी", "वजन मोजण्यासाठी", "कडकपणा मोजण्यासाठी"], a: 0 },
-    
-    // याप्रमाणे तुम्ही १३१ ते २०० पर्यंत प्रश्न ॲड करू शकता. 
+   
+    // याप्रमाणे तुम्ही १३१ ते २०० पर्यंत प्रश्न ॲड करू शकता.
     // नमुन्यासाठी आणखी काही तांत्रिक प्रश्न खाली दिले आहेत:
 
     { q: "१३१. 'Servo Motor' चा वापर कशासाठी होतो?", o: ["High speed", "Precision control", "Cooling", "Lubrication"], a: 1 },
@@ -110,7 +110,7 @@
         questions.forEach((item, index) => {
             const selected = document.querySelector(`input[name="q${index}"]:checked`);
             const correctLabel = document.getElementById(`label-${index}-${item.a}`);
-            
+           
             // सर्व पर्यायांवरील आधीचे रंग काढून टाका
             item.o.forEach((_, i) => {
                 document.getElementById(`label-${index}-${i}`).classList.remove('correct', 'wrong');
