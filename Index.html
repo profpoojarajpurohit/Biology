@@ -1,1 +1,244 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Biology Mock Test - Cell Biology</title>
+   <style>
+       :root { --primary: #0d9488; --success: #22c55e; --danger: #ef4444; --bg: #f0fdfa; }
+       body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); padding: 20px; color: #1e293b; line-height: 1.6; }
+       .container { max-width: 900px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+       h1 { text-align: center; color: var(--primary); border-bottom: 3px solid var(--primary); padding-bottom: 10px; margin-bottom: 30px; }
+       .section-title { background: #ccfbf1; padding: 10px; border-left: 5px solid var(--primary); font-weight: bold; margin-top: 40px; color: #115e59; }
+       .question-box { margin-bottom: 25px; padding: 20px; border: 1px solid #ccfbf1; border-radius: 8px; transition: 0.3s; }
+       .question-box:hover { border-color: var(--primary); }
+       .question-text { font-size: 1.1rem; font-weight: 600; margin-bottom: 15px; display: block; }
+       .options { display: grid; grid-template-columns: 1fr; gap: 10px; }
+       .option-label { display: flex; align-items: center; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; cursor: pointer; transition: 0.2s; }
+       .option-label:hover { background-color: #f0fdfa; }
+       input[type="radio"] { margin-right: 12px; transform: scale(1.2); }
+       
+       /* Feedback Colors */
+       .correct-ans { background-color: #dcfce7 !important; border-color: var(--success) !important; color: #166534; font-weight: bold; }
+       .wrong-ans { background-color: #fee2e2 !important; border-color: var(--danger) !important; color: #991b1b; }
+       
+       /* Solution Box Styling */
+       .solution-box {
+           display: none;
+           margin-top: 15px;
+           padding: 12px 15px;
+           background-color: #f8fafc;
+           border-left: 4px solid #0ea5e9;
+           border-radius: 4px;
+           font-size: 0.95rem;
+           color: #334155;
+       }
+       .solution-title {
+           font-weight: bold;
+           color: #0284c7;
+           margin-bottom: 4px;
+       }
+ 
+       #submit-container { position: sticky; bottom: 20px; text-align: center; margin-top: 40px; }
+       #submit-btn { padding: 15px 50px; font-size: 1.2rem; background: var(--primary); color: white; border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 4px 15px rgba(13,148,136,0.4); transition: 0.3s; }
+       #submit-btn:hover { background: #0f766e; transform: translateY(-2px); }
+       #result-card { display: none; margin-bottom: 30px; padding: 20px; text-align: center; border-radius: 10px; font-size: 1.5rem; font-weight: bold; background: #ccfbf1; color: #115e59; }
+   </style>
+</head>
+<body>
+ 
+<div class="container">
+   <h1>Biology - Cell Structure & Function Mock Test</h1>
+   
+   <div id="result-card"></div>
+   <div id="quiz-form"></div>
+ 
+   <div id="submit-container">
+       <button id="submit-btn" onclick="checkAnswers()">Submit Test & See Score</button>
+   </div>
+</div>
+ 
+<script>
+   const questions = [
+       {
+           q: "1. Which one of the following statements refers to Reductionist Biology?",
+           o: [
+               "Chemical approach to study and understand living organisms",
+               "Behavioural approach to study and understand living organisms",
+               "Physico-chemical approach to study and understand living organisms",
+               "Physiological approach to study and understand living organisms"
+           ],
+           a: 2,
+           explanation: "Reductionism in biology involves breaking down living systems into their physico-chemical constituents to understand biological processes at a molecular level."
+       },
+       {
+           q: "2. Non-membrane bound cell organelles found in both prokaryotic and eukaryotic cell are:",
+           o: [
+               "A. Centrosomes",
+               "B. Ribosomes",
+               "C. Lysosomes",
+               "D. Mitochondria"
+           ],
+           a: 1,
+           explanation: "Ribosomes are non-membrane-bound organelles present in both prokaryotes (70S) and eukaryotes (80S in cytoplasm, 70S in organelles)."
+       },
+       {
+           q: "3. Select the correct statements regarding cell membrane in eukaryotic cell.<br>A. Membrane of human RBCs has approximately 52% protein.<br>B. Major phospholipids are arranged in a bilayer.<br>C. Extensions of the plasma membrane into the cell form mesosomes.<br>D. Tails towards the inner part of lipids are hydrophobic and thus protected from aqueous medium.<br>E. Glycocalyx is present on the outer surface of the plasma membrane.",
+           o: [
+               "A, C and E only",
+               "B, C and E only",
+               "C, D and E only",
+               "A, B and D only"
+           ],
+           a: 3,
+           explanation: "The human RBC membrane has roughly 52% protein and 40% lipids (arranged in a bilayer), and hydrophobic tails face inward. Mesosomes are characteristic of prokaryotes."
+       },
+       {
+           q: "4. A specialised membranous structure in a prokaryotic cell which helps in cell wall formation and DNA replication is:",
+           o: [
+               "Cristae",
+               "Endoplasmic Reticulum",
+               "Mesosome",
+               "Chromatophores"
+           ],
+           a: 2,
+           explanation: "Mesosomes are infoldings of the plasma membrane in prokaryotes that assist in respiration, DNA replication, and cell wall formation."
+       },
+       {
+           q: "5. Cell wall formation in bacteria is facilitated by:",
+           o: [
+               "Ribosomes",
+               "Mesosomes",
+               "Golgi Apparatus",
+               "Centrosomes"
+           ],
+           a: 1,
+           explanation: "Bacterial cell wall formation and DNA replication are aided by mesosomal extensions of the plasma membrane."
+       },
+       {
+           q: "6. Smooth endoplasmic reticulum ________.",
+           o: [
+               "Has ribosomes attached to its surface.",
+               "Is the major site for the synthesis of lipids.",
+               "Is actively involved in protein synthesis.",
+               "Is a site for the synthesis of carbohydrates."
+           ],
+           a: 1,
+           explanation: "Smooth Endoplasmic Reticulum (SER) lacks surface ribosomes and functions as the key site for lipid synthesis."
+       },
+       {
+           q: "7. Which of the following are NOT considered as the part of endomembrane system?<br>A. Mitochondria<br>B. Endoplasmic reticulum<br>C. Chloroplast<br>D. Golgi Complex<br>E. Peroxisomes",
+           o: [
+               "B & D only",
+               "A, C & E only",
+               "A & D only",
+               "A, D & E only"
+           ],
+           a: 1,
+           explanation: "The endomembrane system includes the ER, Golgi complex, lysosomes, and vacuoles. Mitochondria, chloroplasts, and peroxisomes are excluded."
+       },
+       {
+           q: "8. Which of the following statements with respect to the endoplasmic reticulum is incorrect?",
+           o: [
+               "SER is devoid of ribosomes.",
+               "In prokaryotes only RER are present.",
+               "SER are the sites for lipid synthesis.",
+               "RER has ribosomes attached to ER."
+           ],
+           a: 1,
+           explanation: "Prokaryotes completely lack membrane-bound organelles like the Endoplasmic Reticulum (both RER and SER)."
+       },
+       {
+           q: "9. Given below are two statements:<br>Statement I: In bacteria, the mesosomes are formed by the extensions of the plasma membrane.<br>Statement II: The mesosomes, in bacteria, help in DNA replication and cell wall formation.",
+           o: [
+               "Statement I is correct but Statement II is incorrect.",
+               "Statement I is incorrect but Statement II is correct.",
+               "Both Statement I and Statement II are correct.",
+               "Both Statement I and Statement II are incorrect."
+           ],
+           a: 2,
+           explanation: "Both statements are correct; mesosomes are plasma membrane infoldings in bacteria that support replication and cell wall synthesis."
+       },
+       {
+           q: "10. Which is the important site of formation of glycoproteins and glycolipids in eukaryotic cells?",
+           o: [
+               "Golgi bodies",
+               "Polysomes",
+               "Endoplasmic reticulum",
+               "Peroxisomes"
+           ],
+           a: 0,
+           explanation: "Proteins and lipids synthesized in the ER are modified in the Golgi apparatus via glycosylation to form glycoproteins and glycolipids."
+       },
+       {
+           q: "11. The Golgi complex participates in:",
+           o: [
+               "Fatty acid breakdown",
+               "Formation of secretory vesicles",
+               "Respiration in bacteria",
+               "Activation of amino acid"
+           ],
+           a: 1,
+           explanation: "The Golgi apparatus packages materials synthesized in the ER and buds them off as secretory vesicles."
+       }
+   ];
+ 
+   function loadQuiz() {
+       const quizForm = document.getElementById('quiz-form');
+       let html = '<div class="section-title">Cell Biology & Biomolecules Test</div>';
+       
+       questions.forEach((item, index) => {
+           html += `
+               <div class="question-box" id="box-${index}">
+                   <span class="question-text">${item.q}</span>
+                   <div class="options">
+                       ${item.o.map((opt, i) => `
+                           <label class="option-label" id="label-${index}-${i}">
+                               <input type="radio" name="q${index}" value="${i}"> ${opt}
+                           </label>
+                       `).join('')}
+                   </div>
+                   <div class="solution-box" id="solution-${index}">
+                       <div class="solution-title">Solution / Explanation:</div>
+                       <div>${item.explanation}</div>
+                   </div>
+               </div>
+           `;
+       });
+       quizForm.innerHTML = html;
+   }
+ 
+   function checkAnswers() {
+       let score = 0;
+       questions.forEach((item, index) => {
+           const selected = document.querySelector(`input[name="q${index}"]:checked`);
+           
+           // Highlight Correct Answer
+           document.getElementById(`label-${index}-${item.a}`).classList.add('correct-ans');
+ 
+           if (selected) {
+               const userVal = parseInt(selected.value);
+               if (userVal === item.a) {
+                   score++;
+               } else {
+                   document.getElementById(`label-${index}-${userVal}`).classList.add('wrong-ans');
+               }
+           }
+ 
+           // Reveal Solution Box
+           document.getElementById(`solution-${index}`).style.display = 'block';
+       });
+ 
+       const resultCard = document.getElementById('result-card');
+       resultCard.innerHTML = `Your Score: ${score} / ${questions.length} <br> <span style="font-size: 1rem; font-weight: normal;">(Green highlights show correct answers with explanations below)</span>`;
+       resultCard.style.display = 'block';
+       window.scrollTo({ top: 0, behavior: 'smooth' });
+       document.getElementById('submit-btn').innerText = "Test Submitted!";
+       document.getElementById('submit-btn').disabled = true;
+   }
+ 
+   loadQuiz();
+</script>
+ 
+</body>
+</html>
